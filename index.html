@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>90035 Seller Net Proceeds + Taxes — $2M vs $3M</title>
+<style>
+  :root {
+    --bg: #0f1419;
+    --card: #1a2332;
+    --border: #2d3a4f;
+    --text: #e8eef6;
+    --muted: #8b9bb4;
+    --accent: #3b82f6;
+    --accent2: #10b981;
+    --warn: #f59e0b;
+    --red: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 1.5rem;
+    min-height: 100vh;
+  }
+  h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
+  .subtitle { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .controls {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.3rem; }
+  input, select {
+    width: 100%;
+    background: #0d1117;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.55rem 0.7rem;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  input:focus, select:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  .results { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 800px) { .results { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .card h2 { font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--accent); }
+  .card.three h2 { color: var(--accent2); }
+  .net {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0.4rem 0 0.8rem;
+  }
+  .net.positive { color: var(--accent2); }
+  .net.after { color: #60a5fa; font-size: 1.6rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 0.4rem 0.2rem; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; }
+  td.amount { text-align: right; font-variant-numeric: tabular-nums; }
+  .total-row td { font-weight: 700; border-bottom: none; padding-top: 0.7rem; }
+  .tax-section { margin-top: 1rem; padding-top: 0.75rem; border-top: 1px dashed var(--border); }
+  .note { margin-top: 1.25rem; font-size: 0.78rem; color: var(--muted); line-height: 1.45; }
+  .note strong { color: var(--warn); }
+  .badge { display: inline-block; background: #1e3a5f; color: #93c5fd; font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 99px; margin-left: 0.5rem; }
+  .ula { color: var(--red); }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>90035 Seller Net Proceeds + Taxes</h1>
+  <p class="subtitle">$2M vs $3M sale in ZIP 90035 (City of Los Angeles). Includes typical closing costs and estimated capital gains tax (primary residence, $1M basis, married filing jointly).</p>
+
+  <div class="controls">
+    <div>
+      <label for="commission">Total Commission %</label>
+      <input type="number" id="commission" value="5.5" step="0.1" min="0" max="10">
+    </div>
+    <div>
+      <label for="basis">Cost Basis ($)</label>
+      <input type="number" id="basis" value="1000000" step="50000">
+    </div>
+    <div>
+      <label for="mortgage2">Mortgage Payoff — $2M</label>
+      <input type="number" id="mortgage2" value="0" step="10000">
+    </div>
+    <div>
+      <label for="mortgage3">Mortgage Payoff — $3M</label>
+      <input type="number" id="mortgage3" value="0" step="10000">
+    </div>
+    <div>
+      <label for="credits2">Credits / Repairs — $2M</label>
+      <input type="number" id="credits2" value="5000" step="1000">
+    </div>
+    <div>
+      <label for="credits3">Credits / Repairs — $3M</label>
+      <input type="number" id="credits3" value="7500" step="1000">
+    </div>
+    <div>
+      <label for="taxes2">Prorated Property Taxes — $2M</label>
+      <input type="number" id="taxes2" value="3000" step="500">
+    </div>
+    <div>
+      <label for="taxes3">Prorated Property Taxes — $3M</label>
+      <input type="number" id="taxes3" value="4500" step="500">
+    </div>
+  </div>
+
+  <div class="results">
+    <div class="card" id="card2">
+      <h2>$2,000,000 Sale <span class="badge">90035</span></h2>
+      <div class="net positive" id="net2">—</div>
+      <div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;">Before taxes & mortgage</div>
+      <div class="net after" id="after2">—</div>
+      <div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.75rem;">After estimated capital gains tax</div>
+      <table id="table2"></table>
+    </div>
+    <div class="card three" id="card3">
+      <h2>$3,000,000 Sale <span class="badge">90035</span></h2>
+      <div class="net positive" id="net3">—</div>
+      <div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;">Before taxes & mortgage</div>
+      <div class="net after" id="after3">—</div>
+      <div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.75rem;">After estimated capital gains tax</div>
+      <table id="table3"></table>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Estimates only — not tax or financial advice.</strong><br>
+    • Primary residence assumed (2 of last 5 years ownership & use). Married filing jointly $500,000 Section 121 exclusion (federal + CA conform).<br>
+    • Federal long-term capital gains (2026 brackets): 15% / 20% on taxable gain after exclusion, plus 3.8% NIIT (MAGI threshold $250k MFJ — applies here).<br>
+    • California taxes the taxable gain as ordinary income (top marginal ~13.3% including 1% MHST over $1M). Effective rate used is progressive approximation based on the size of the taxable gain alone (other income not modeled).<br>
+    • Selling costs reduce the realized gain. Mortgage payoff does not affect capital gain calculation.<br>
+    • Measure ULA does not apply to $2M or $3M. Confirm exact title/escrow fees and your specific basis (improvements, etc.) with a tax professional and local title company.
+  </div>
+</div>
+
+<script>
+const fmt = (n) => n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+
+function calcClosing(price, commissionPct, mortgage, credits, proratedTax) {
+  const commission = price * (commissionPct / 100);
+  const countyTax = Math.ceil(price / 1000) * 1.10;
+  const cityTax = Math.ceil(price / 1000) * 4.50;
+  const ula = 0;
+  const title = price * 0.0025;
+  const escrow = Math.max(1200, price * 0.0012);
+  const nhd = 125;
+  const recording = 200;
+  const warranty = 550;
+
+  const totalClosing = commission + countyTax + cityTax + ula + title + escrow + nhd + recording + warranty + credits + proratedTax;
+  const netBeforeTax = price - totalClosing - mortgage;
+
+  return {
+    price, commission, countyTax, cityTax, ula, title, escrow, nhd, recording, warranty, credits, proratedTax, mortgage, totalClosing, netBeforeTax
+  };
+}
+
+function calcTaxes(price, totalClosing, basis) {
+  const realizedGain = Math.max(0, price - totalClosing - basis);
+  const exclusion = 500000;
+  const taxableGain = Math.max(0, realizedGain - exclusion);
+
+  if (taxableGain === 0) {
+    return { realizedGain, taxableGain, fedTax: 0, niit: 0, caTax: 0, totalTax: 0, effective: 0 };
+  }
+
+  let fedTax = 0;
+  if (taxableGain <= 400000) {
+    fedTax = taxableGain * 0.15;
+  } else {
+    fedTax = 400000 * 0.15 + (taxableGain - 400000) * 0.20;
+  }
+
+  const niit = taxableGain * 0.038;
+
+  let caTax = 0;
+  const brackets = [
+    [22158, 0.01], [52528, 0.02], [82904, 0.04], [115084, 0.06],
+    [145448, 0.08], [300000, 0.093], [500000, 0.103], [1000000, 0.113],
+    [Infinity, 0.123]
+  ];
+  let remaining = taxableGain;
+  let prev = 0;
+  for (const [limit, rate] of brackets) {
+    const slice = Math.min(remaining, limit - prev);
+    if (slice > 0) {
+      caTax += slice * rate;
+      remaining -= slice;
+    }
+    prev = limit;
+    if (remaining <= 0) break;
+  }
+  if (taxableGain > 600000) {
+    caTax += Math.min(taxableGain, taxableGain - 200000) * 0.01 * 0.5;
+  }
+
+  const totalTax = fedTax + niit + caTax;
+  const effective = totalTax / taxableGain;
+
+  return { realizedGain, taxableGain, fedTax, niit, caTax, totalTax, effective };
+}
+
+function render(price, idPrefix, mortgage, credits, tax, basis) {
+  const c = parseFloat(document.getElementById('commission').value) || 5.5;
+  const closing = calcClosing(price, c, mortgage, credits, tax);
+  const taxes = calcTaxes(price, closing.totalClosing, basis);
+
+  const afterTaxNet = closing.netBeforeTax - taxes.totalTax;
+
+  document.getElementById('net' + idPrefix).textContent = fmt(closing.netBeforeTax);
+  document.getElementById('after' + idPrefix).textContent = fmt(afterTaxNet);
+
+  const rows = [
+    ['Sale Price', closing.price],
+    ['Agent Commission (' + c + '%)', -closing.commission],
+    ['County Transfer Tax', -closing.countyTax],
+    ['City of LA Transfer Tax', -closing.cityTax],
+    ['Measure ULA', -closing.ula],
+    ['Owner’s Title Insurance (est.)', -closing.title],
+    ['Escrow Fee (seller est.)', -closing.escrow],
+    ['NHD + Recording + Warranty', -(closing.nhd + closing.recording + closing.warranty)],
+    ['Credits / Repairs', -closing.credits],
+    ['Prorated Property Taxes', -closing.proratedTax],
+    ['Total Closing Costs', -closing.totalClosing],
+    ['Mortgage Payoff', -closing.mortgage],
+    ['Net Before Capital Gains Tax', closing.netBeforeTax],
+    ['--- Tax Calculation ---', null],
+    ['Cost Basis', -basis],
+    ['Realized Gain', taxes.realizedGain],
+    ['§121 Exclusion (MFJ)', -Math.min(500000, taxes.realizedGain)],
+    ['Taxable Gain', taxes.taxableGain],
+    ['Federal LTCG Tax (est.)', -taxes.fedTax],
+    ['NIIT 3.8%', -taxes.niit],
+    ['California Tax (est.)', -taxes.caTax],
+    ['Total Estimated Tax', -taxes.totalTax],
+    ['Net After Tax & Mortgage', afterTaxNet]
+  ];
+
+  let html = `<thead><tr><th>Item</th><th style="text-align:right">Amount</th></tr></thead><tbody>`;
+  rows.forEach(([label, amt]) => {
+    if (amt === null) {
+      html += `<tr><td colspan="2" style="color:var(--muted);font-size:0.8rem;padding-top:0.6rem;">${label}</td></tr>`;
+    } else {
+      const bold = label.includes('Net') || label.includes('Total');
+      html += `<tr class="${bold ? 'total-row' : ''}"><td>${label}</td><td class="amount">${fmt(amt)}</td></tr>`;
+    }
+  });
+  html += `</tbody>`;
+  document.getElementById('table' + idPrefix).innerHTML = html;
+}
+
+function update() {
+  const basis = parseFloat(document.getElementById('basis').value) || 1000000;
+  const m2 = parseFloat(document.getElementById('mortgage2').value) || 0;
+  const m3 = parseFloat(document.getElementById('mortgage3').value) || 0;
+  const cr2 = parseFloat(document.getElementById('credits2').value) || 0;
+  const cr3 = parseFloat(document.getElementById('credits3').value) || 0;
+  const tx2 = parseFloat(document.getElementById('taxes2').value) || 0;
+  const tx3 = parseFloat(document.getElementById('taxes3').value) || 0;
+
+  render(2000000, '2', m2, cr2, tx2, basis);
+  render(3000000, '3', m3, cr3, tx3, basis);
+}
+
+document.querySelectorAll('input').forEach(el => el.addEventListener('input', update));
+update();
+</script>
+</body>
+</html>
